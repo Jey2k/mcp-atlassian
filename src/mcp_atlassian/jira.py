@@ -20,17 +20,24 @@ class JiraFetcher:
         url = os.getenv("JIRA_URL")
         username = os.getenv("JIRA_USERNAME")
         token = os.getenv("JIRA_API_TOKEN")
+        personal_token = os.getenv("JIRA_PERSONAL_TOKEN")
 
-        if not all([url, username, token]):
+        if not all([url, username, token, personal_token]):
             raise ValueError("Missing required Jira environment variables")
 
-        self.config = JiraConfig(url=url, username=username, api_token=token)
-        self.jira = Jira(
-            url=self.config.url,
-            username=self.config.username,
-            password=self.config.api_token,  # API token is used as password
-            cloud=True,
-        )
+        self.config = JiraConfig(url=url, username=username, api_token=token, personal_token=personal_token)
+        if self.config.is_cloud:
+            self.jira = Jira(
+                url=self.config.url,
+                username=self.config.username,
+                password=self.config.api_token,  # API token is used as password
+                cloud=True,
+            )
+        else:
+            self.jira = Jira(
+                url=self.config.url,
+                token=self.config.personal_token
+            )
         self.preprocessor = TextPreprocessor(self.config.url)
 
     def _clean_text(self, text: str) -> str:

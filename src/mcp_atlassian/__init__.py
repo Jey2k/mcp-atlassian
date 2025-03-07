@@ -20,6 +20,7 @@ logger = logging.getLogger("mcp-atlassian")
 @click.option("--jira-url", help="Jira URL (e.g., https://your-domain.atlassian.net)")
 @click.option("--jira-username", help="Jira username/email")
 @click.option("--jira-token", help="Jira API token")
+@click.option("--jira-personal-token", help="Jira personal token")
 def main(
     verbose: bool,
     env_file: str | None,
@@ -29,6 +30,7 @@ def main(
     jira_url: str | None,
     jira_username: str | None,
     jira_token: str | None,
+    jira_personal_token: str | None
 ) -> None:
     """MCP Atlassian Server - Jira and Confluence functionality for MCP"""
     # Configure logging based on verbosity
@@ -61,6 +63,8 @@ def main(
         os.environ["JIRA_USERNAME"] = jira_username
     if jira_token:
         os.environ["JIRA_API_TOKEN"] = jira_token
+    if jira_personal_token:
+        os.environ["JIRA_PERSONAL_TOKEN"] = jira_personal_token
 
     from . import server
 

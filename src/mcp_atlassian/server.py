@@ -28,7 +28,7 @@ def get_available_services():
         ]
     )
 
-    jira_vars = all([os.getenv("JIRA_URL"), os.getenv("JIRA_USERNAME"), os.getenv("JIRA_API_TOKEN")])
+    jira_vars = all([os.getenv("JIRA_URL"), os.getenv("JIRA_USERNAME"), os.getenv("JIRA_API_TOKEN"), os.getenv("JIRA_PERSONAL_TOKEN")])
 
     return {"confluence": confluence_vars, "jira": jira_vars}
 
